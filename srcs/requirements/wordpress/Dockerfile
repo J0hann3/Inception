@@ -1,1 +1,2 @@
-FROM debian:bullleyes
+FROM debian:bullseye
+
