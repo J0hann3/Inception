@@ -1,1 +1,6 @@
-# build docker images
+services:
+  mariadb:
+    volume:
+  wordpress:
+    volume:
+  nginx:
