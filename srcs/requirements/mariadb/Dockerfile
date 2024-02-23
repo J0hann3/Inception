@@ -1,26 +1,15 @@
-FROM debian:bullseye
+FROM debian:bullseye-slim
 
-ARG MYSQL_ROOT_PASSWORD
-ARG MYSQL_USER
-ARG MYSQL_PASSWORD
-ARG MYSQL_DATABASE
-
-USER root
+RUN apt -y update && apt -y install mariadb-server
 
 VOLUME /home/jvigny/data/
 
-EXPOSE 3306
+COPY tools/mariadb_config.sh mariadb_config.sh
 
-RUN apt -y update
-
-RUN apt -y install mariadb-server
-
-WORKDIR /mariadb
-
-COPY ./tools/mariadb_config.sh ./mariadb_config.sh
-
-RUN chmod u+x ./mariadb_config.sh
+RUN chmod u+x mariadb_config.sh
 
 ENTRYPOINT [ "./mariadb_config.sh" ]
 
-CMD ["mysql"]
+EXPOSE 3306
+
+CMD ["mariadb"]
