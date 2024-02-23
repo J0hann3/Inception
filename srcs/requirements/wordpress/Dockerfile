@@ -1,11 +1,12 @@
-FROM debian:bullseye
+FROM debian:bullseye-slim
 
-RUN apt-get -y update
+ARG version=6.4.3
 
-RUN apt-get -y install php
+RUN apt -y update && apt -y install wget; \
+	wget https://wordpress.org/wordpress-$version.tar.gz; \
+	tar -xzvf wordpress-$version.tar.gz; \
+	rm wordpress-$version.tar.gz;
 
-# RUN apt-get -y install php-mysql  ??
+VOLUME /home/jvigny/data
 
-RUN apt-get install git
-
-RUN git clone https://github.com/WordPress/WordPress.git
+EXPOSE 9000

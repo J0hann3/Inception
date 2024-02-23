@@ -10,10 +10,16 @@ services:
       - database:/home/jvigny/data
     ports:
       - '3306:3306'
-  # wordpress:
-  #   build: ./requirements/wordpres/
-  #   volume:
-  #     - wordpress: /home/jvigny/data
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress/
+    volumes:
+      - wordpress:/home/jvigny/data
+    ports:
+      - '9000:9000'
+    env_file:
+    - path: .env
+      required: true
   # nginx:
   #   build: ./requirements/nginx/
   #   volume:
@@ -21,4 +27,4 @@ services:
 
 volumes:
   database:
-  # wordpress:
+  wordpress:
