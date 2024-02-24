@@ -22,10 +22,15 @@ services:
     env_file:
     - path: .env
       required: true
-  # nginx:
-  #   build: ./requirements/nginx/
-  #   volume:
-  #     - wordpress: /home/jvigny/data
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx/
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/home/jvigny/data
+    ports:
+      - '443:443'
 
 volumes:
   database:
