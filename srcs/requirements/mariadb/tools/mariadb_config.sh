@@ -12,7 +12,7 @@ then
 
 	# set root password
 	mysqladmin --user=root password ${MYSQL_ROOT_PASSWORD}
-	# RUN mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('$MYSQL_ROOT_PASSWORD{}') WHERE User='root';"
+	# mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('$MYSQL_ROOT_PASSWORD{}') WHERE User='root';"
 
 	# Remove anonyomous users
 	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "DELETE FROM mysql.user WHERE User='';"

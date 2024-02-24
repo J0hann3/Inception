@@ -13,6 +13,8 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress/
+    depends_on:
+      - mariadb
     volumes:
       - wordpress:/home/jvigny/data
     ports:
