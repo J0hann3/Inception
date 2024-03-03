@@ -1,8 +1,8 @@
 services:
   mariadb:
     container_name: mariadb
-    build: ./requirements/mariadb/
-    # restart: always
+    image: mariadb:latest
+    restart: always
     env_file:
       - path: .env
         required: true
@@ -10,27 +10,40 @@ services:
       - database:/home/jvigny/data
     ports:
       - '3306:3306'
+
   wordpress:
     container_name: wordpress
-    build: ./requirements/wordpress/
+    image: wordpress:latest
     depends_on:
       - mariadb
     volumes:
-      - wordpress:/home/jvigny/data
+      - wordpress:/var/www/htlm
     ports:
       - '9000:9000'
-    env_file:
-    - path: .env
-      required: true
+    environment:
+      - WORDPRESS_DB_HOST=mariadb
+      - WORDPRESS_DB_USER=${MYSQL_USER}
+      - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
+      - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
+    # env_file:
+    #   - path: .env
+    #     required: true
+    restart: always
+
+
   nginx:
     container_name: nginx
-    build: ./requirements/nginx/
+    image: nginx:latest
     depends_on:
       - wordpress
     volumes:
       - wordpress:/home/jvigny/data
     ports:
-      - '443:443'
+      - '80:80'
+    restart: always
+    # environment:
+    #   - NGINX_HOST=jvigny.42.fr
+    #   - NGINX_PORT=443
 
 volumes:
   database:
