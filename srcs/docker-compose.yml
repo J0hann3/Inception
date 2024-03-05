@@ -1,15 +1,20 @@
 services:
   mariadb:
     container_name: mariadb
-    image: mariadb:latest
+    
+    # image: mariadb:latest
     restart: always
-    env_file:
-      - path: .env
-        required: true
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     volumes:
-      - database:/home/jvigny/data
-    ports:
-      - '3306:3306'
+      - database:/var/lib/mysql
+    expose:
+      - 3306
+    networks:
+      - my_network
 
   wordpress:
     container_name: wordpress
@@ -17,34 +22,54 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - wordpress:/var/www/htlm
-    ports:
-      - '9000:9000'
+      - wordpress:/var/www/html
     environment:
       - WORDPRESS_DB_HOST=mariadb
       - WORDPRESS_DB_USER=${MYSQL_USER}
       - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
       - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
-    # env_file:
-    #   - path: .env
-    #     required: true
     restart: always
-
-
-  nginx:
-    container_name: nginx
-    image: nginx:latest
-    depends_on:
-      - wordpress
-    volumes:
-      - wordpress:/home/jvigny/data
     ports:
-      - '80:80'
-    restart: always
-    # environment:
-    #   - NGINX_HOST=jvigny.42.fr
-    #   - NGINX_PORT=443
+      - '8080:80'
+    networks:
+      - my_network
+
 
 volumes:
   database:
+    name: database
+    driver: local
+    driver_opts:
+      device: /home/jvigny/data/database
+      type: none
+      o: bind
   wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /home/jvigny/data/wordpress
+      type: none
+      o: bind
+
+networks:
+  my_network:
+    name: my_network
+    driver: bridge
+
+
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx:latest
+  #   restart: always
+  #   depends_on:
+  #     - wordpress
+  #   volumes:
+  #     - wordpress:/var/www/html
+  #     # - ./nginx:/etc/nginx/conf.d
+  #   ports:
+  #     - '80:80'
+  #   networks:
+  #     - my_network
+  #   env_file:
+  #     - path: .env
+  #       required: true
