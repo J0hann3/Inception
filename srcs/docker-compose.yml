@@ -1,7 +1,7 @@
 services:
   mariadb:
     container_name: mariadb
-    
+    build: ./requirements/mariadb
     # image: mariadb:latest
     restart: always
     environment:

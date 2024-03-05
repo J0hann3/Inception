@@ -12,4 +12,4 @@ ENTRYPOINT [ "mariadb_config.sh" ]
 
 EXPOSE 3306
 
-CMD ["mariadb"]
+CMD ["mariadbd"]

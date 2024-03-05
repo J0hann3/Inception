@@ -1,13 +1,13 @@
 #!/bin/bash
 
-service mariadb start > /dev/null
+service mariadb start
 
 # check if mariadb is already set up
 database=$(echo "SHOW DATABASES LIKE '${MYSQL_DATABASE}';" | mysql 2> /dev/null)
 
 if [[ -z $database ]];
 then
-
+	echo "RUN mysql_secure_installation"
 	# RUN mysql_secure_installation
 
 	# set root password
@@ -43,4 +43,7 @@ else
 
 fi
 
+service mariadb stop 
+
+echo "Run $@"
 exec "$@"
