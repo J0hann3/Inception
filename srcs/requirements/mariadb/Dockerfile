@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-RUN apt -y update && apt -y install mariadb-server
+RUN apt -y update && apt -y install mariadb-server;
 
 VOLUME /var/lib/mysql
 

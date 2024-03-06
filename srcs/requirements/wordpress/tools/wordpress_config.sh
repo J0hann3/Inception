@@ -3,6 +3,7 @@
 sed -i "s/database_name_here/$MYSQL_DATABASE/" /wordpress/wp-config.php
 sed -i "s/username_here/$MYSQL_USER/" /wordpress/wp-config.php
 sed -i "s/password_here/$MYSQL_PASSWORD/" /wordpress/wp-config.php
+sed -i "s/define( 'WP_DEBUG', false );/define( 'WP_DEBUG', true );/" /wordpress/wp-config.php
 
 sed -i '0,/put your unique phrase here/s/put your unique phrase here/@nd=Z-K5J[}bXE7ZihAZ<x-j+ErI@>%(PPr+yi KV{K4iO{N+`4#$k$:x1D^B,0I/' /wordpress/wp-config.php
 sed -i '0,/put your unique phrase here/s/put your unique phrase here/5zesm:{i1q?B:u#o*\&jw}|3*~8=7pCJ]=+]Q|Ro_3|jIlxC:\&$A8^Tna=-t|{!.;/' /wordpress/wp-config.php

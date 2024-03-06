@@ -3,10 +3,10 @@
 service mariadb start
 
 # check if mariadb is already set up
-database=$(echo "SHOW DATABASES LIKE '${MYSQL_DATABASE}';" | mysql 2> /dev/null)
+# database=$(echo "SHOW DATABASES LIKE '${MYSQL_DATABASE}';" | mysql 2> /dev/null)
 
-if [[ -z $database ]];
-then
+# if [[ -z $database ]];
+# then
 	echo "RUN mysql_secure_installation"
 	# RUN mysql_secure_installation
 
@@ -28,8 +28,8 @@ then
 	# mysql -u root -p${MSQYL_ROOT_PASSWORD} -e "FLUSH PRIVILEGES"
 
 	# Add a second users
-	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE USER '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}'; \
-	GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'localhost';"
+	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE USER '${MYSQL_USER}'@'wordpress.my_network' IDENTIFIED BY '${MYSQL_PASSWORD}'; \
+	GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'wordpress.my_network';"
 
 	# Create database wordpress
 	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE ${MYSQL_DATABASE};"
@@ -37,13 +37,16 @@ then
 	# Reload privilege tables
 	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "FLUSH PRIVILEGES;"
 
-else
+	echo "end config"
 
-	echo "Database already created !"
+# else
 
-fi
+# 	echo "Database already created !"
 
-service mariadb stop 
+# fi
 
-echo "Run $@"
+sed -i "s/bind-address            = 127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
+
+service mariadb stop
+
 exec "$@"

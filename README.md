@@ -45,8 +45,18 @@
 - docker rm ID
 	-f to stop the docker and rm at the same time
 
+- docker compose build
 - docker compose up
+	- -build
 - docker compose down
+
+- docker system df	-> list images, containers, volumes, caches ...
+- docker system -a -f -> remove stop container, networks , unsused images...
+- docker image -a
+- docker volume
+- docker container
+
+
 
 
 
