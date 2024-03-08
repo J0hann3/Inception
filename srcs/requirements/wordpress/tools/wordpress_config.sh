@@ -1,8 +1,11 @@
 #!/bin/bash
 
-sed -i "s/database_name_here/$MYSQL_DATABASE/" /wordpress/wp-config.php
-sed -i "s/username_here/$MYSQL_USER/" /wordpress/wp-config.php
-sed -i "s/password_here/$MYSQL_PASSWORD/" /wordpress/wp-config.php
+# set connection to database
+sed -i "s/database_name_here/$WORDPRESS_DB_NAME/" /wordpress/wp-config.php
+sed -i "s/username_here/$WORDPRESS_DB_USER/" /wordpress/wp-config.php
+sed -i "s/password_here/$WORDPRESS_DB_PASSWORD/" /wordpress/wp-config.php
+
+# active debug
 sed -i "s/define( 'WP_DEBUG', false );/define( 'WP_DEBUG', true );/" /wordpress/wp-config.php
 
 sed -i '0,/put your unique phrase here/s/put your unique phrase here/@nd=Z-K5J[}bXE7ZihAZ<x-j+ErI@>%(PPr+yi KV{K4iO{N+`4#$k$:x1D^B,0I/' /wordpress/wp-config.php
@@ -14,4 +17,10 @@ sed -i '0,/put your unique phrase here/s@put your unique phrase here@(=T5G|b0L[Q
 sed -i '0,/put your unique phrase here/s/put your unique phrase here/O~iFoA4fh}]Uj_i)s|=wg*;0KJA4]m04~B|@QXh0PyA-B1~%=3Ukv|`=6?FQiF){/' /wordpress/wp-config.php
 sed -i '0,/put your unique phrase here/s|put your unique phrase here|^!9[kAQp]:]TRZjF,]~bO!=FkASj5>DmU#j+4<J@\&P)4ATTTRS@{P~H<x/02y4Lf|' /wordpress/wp-config.php
 
-# cat /wordpress/wp-config.php
+cat /wordpress/wp-config.php
+
+cat /etc/php/7.4/fpm/pool.d/wordpress.conf
+
+sleep infinity
+# service php7.4-fpm restart
+# exec "$@"

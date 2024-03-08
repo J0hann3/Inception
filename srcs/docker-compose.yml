@@ -2,7 +2,7 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
-    # image: mariadb:latest
+    image: mariadb:latest
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -17,24 +17,37 @@ services:
       - my_network
 
   wordpress:
-    container_name: wordpress
+    # container_name: wordpress
+    build: ./requirements/wordpress
     image: wordpress:latest
     depends_on:
       - mariadb
     volumes:
       - wordpress:/var/www/html
     environment:
-      - WORDPRESS_DB_HOST=mariadb
+      - WORDPRESS_DB_HOST=mariadb:3306
       - WORDPRESS_DB_USER=${MYSQL_USER}
       - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
       - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
       - WORDPRESS_DEBUG=true
-    restart: always
-    ports:
-      - '8080:80'
+    # restart: always
     networks:
       - my_network
 
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: always
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/var/www/html
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - '80:80'
+    networks:
+      - my_network
 
 volumes:
   database:
@@ -57,20 +70,3 @@ networks:
     name: my_network
     driver: bridge
 
-
-  # nginx:
-  #   container_name: nginx
-  #   image: nginx:latest
-  #   restart: always
-  #   depends_on:
-  #     - wordpress
-  #   volumes:
-  #     - wordpress:/var/www/html
-  #     # - ./nginx:/etc/nginx/conf.d
-  #   ports:
-  #     - '80:80'
-  #   networks:
-  #     - my_network
-  #   env_file:
-  #     - path: .env
-  #       required: true

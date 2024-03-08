@@ -7,16 +7,18 @@ RUN apt -y update && apt -y install wget; \
 	tar -xzvf wordpress-$version.tar.gz; \
 	rm wordpress-$version.tar.gz; \
 	chown -R www-data:www-data wordpress/; \
-	cp wordpress/wp-config-sample.php wordpress/wp-config.php
+	cp wordpress/wp-config-sample.php wordpress/wp-config.php;
 
-# need to install php
+RUN apt install -y php7.4-fpm;
 
 VOLUME /home/jvigny/data
 
-# COPY ./conf/wp-config.php /wordpress
-COPY ./tools/wordpress_config.sh ./wordpress_config.sh
-RUN chmod u+x ./wordpress_config.sh
+COPY ./conf/wordpress.conf /etc/php/7.4/fpm/pool.d/wordpress.conf
+COPY ./tools/wordpress_config.sh /usr/local/bin/wordpress_config.sh
+# RUN chmod u+x /usr/local/bin/wordpress_config.sh
 
 EXPOSE 9000
 
-ENTRYPOINT [ "./wordpress_config.sh" ]
+ENTRYPOINT [ "wordpress_config.sh" ]
+
+CMD [ "php7.4-fpm" ]

@@ -3,10 +3,10 @@
 service mariadb start
 
 # check if mariadb is already set up
-# database=$(echo "SHOW DATABASES LIKE '${MYSQL_DATABASE}';" | mysql 2> /dev/null)
+database=$(echo "SHOW DATABASES LIKE '${MYSQL_DATABASE}';" | mysql 2> /dev/null)
 
-# if [[ -z $database ]];
-# then
+if [[ -z $database ]];
+then
 	echo "RUN mysql_secure_installation"
 	# RUN mysql_secure_installation
 
@@ -37,15 +37,15 @@ service mariadb start
 	# Reload privilege tables
 	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "FLUSH PRIVILEGES;"
 
+	sed -i "s/bind-address            = 127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
+
 	echo "end config"
+else
 
-# else
+	echo "Database already created !"
 
-# 	echo "Database already created !"
+fi
 
-# fi
-
-sed -i "s/bind-address            = 127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
 
 service mariadb stop
 
