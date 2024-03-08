@@ -2,7 +2,7 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
-    image: mariadb:latest
+    # image: mariadb:latest
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -11,15 +11,15 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     volumes:
       - database:/var/lib/mysql
-    expose:
-      - 3306
+    # expose:
+    #   - 3306
     networks:
       - my_network
 
   wordpress:
-    # container_name: wordpress
+    container_name: wordpress
     build: ./requirements/wordpress
-    image: wordpress:latest
+    # image: wordpress:fpm
     depends_on:
       - mariadb
     volumes:
@@ -30,7 +30,9 @@ services:
       - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
       - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
       - WORDPRESS_DEBUG=true
-    # restart: always
+    restart: always
+    # ports:
+    #   - '8080:80'
     networks:
       - my_network
 
@@ -48,6 +50,9 @@ services:
       - '80:80'
     networks:
       - my_network
+    # env_file:
+    #   - path: .env
+    #     required: true
 
 volumes:
   database:

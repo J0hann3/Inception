@@ -4,21 +4,23 @@ ARG version=6.4.3
 
 RUN apt -y update && apt -y install wget; \
 	wget https://wordpress.org/wordpress-$version.tar.gz; \
-	tar -xzvf wordpress-$version.tar.gz; \
+	mkdir -p /var/www/html/; \
+	tar -xzvf wordpress-$version.tar.gz -C /var/www/html; \
 	rm wordpress-$version.tar.gz; \
-	chown -R www-data:www-data wordpress/; \
-	cp wordpress/wp-config-sample.php wordpress/wp-config.php;
+	chown -R www-data:www-data /var/www/html/wordpress; \
+	cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php;
 
-RUN apt install -y php7.4-fpm;
+RUN apt-get -y install php-cli php-mysql php-curl php-gd php-intl php-fpm
 
-VOLUME /home/jvigny/data
+
+VOLUME /var/www/html
 
 COPY ./conf/wordpress.conf /etc/php/7.4/fpm/pool.d/wordpress.conf
+
 COPY ./tools/wordpress_config.sh /usr/local/bin/wordpress_config.sh
-# RUN chmod u+x /usr/local/bin/wordpress_config.sh
 
 EXPOSE 9000
 
 ENTRYPOINT [ "wordpress_config.sh" ]
 
-CMD [ "php7.4-fpm" ]
+CMD [ "php-fpm7.4", "--nodaemonize" ]
