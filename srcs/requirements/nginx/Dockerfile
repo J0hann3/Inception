@@ -1,26 +1,13 @@
 FROM debian:bullseye
 
-RUN apt-get -y update; \
-	apt-get -y install nginx;
+RUN apt -y update; \
+	apt -y install nginx;
 # 	apt install lsb-release ca-certificates apt-transport-https software-properties-common -y
 
-# sudo mkdir -p /var/www/your_domain/html
-# sudo chown -R $USER:$USER /var/www/your_domain/html
-# sudo chmod -R 755 /var/www/your_domain
-# nano /var/www/your_domain/html/index.html ->write page
-# sudo nano /etc/nginx/sites-available/your_domain
+COPY ./conf/nginx.conf /etc/nginx/conf.d/wordpress.conf
 
-# server {
-#         listen 80;
-#         listen [::]:80;
+COPY ./tools/nginx_conf.sh /usr/local/bin/nginx_conf.sh
 
-#         root /var/www/your_domain/html;
-#         index index.html index.htm index.nginx-debian.html;
+ENTRYPOINT [ "nginx_conf.sh" ]
 
-#         server_name your_domain www.your_domain;
-
-#         location / {
-#                 try_files $uri $uri/ =404;
-#         }
-# }
-# sudo ln -s /etc/nginx/sites-available/your_domain /etc/nginx/sites-enabled/
+CMD ["nginx", "-g", "daemon off;"]

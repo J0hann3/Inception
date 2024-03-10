@@ -30,5 +30,5 @@ rm /etc/php/7.4/fpm/pool.d/www.conf
 service php7.4-fpm stop
 
 php-fpm7.4 -t
-# sleep infinity
+
 exec "$@"
