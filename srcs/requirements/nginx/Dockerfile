@@ -1,8 +1,8 @@
 FROM debian:bullseye
 
 RUN apt -y update; \
-	apt -y install nginx;
-# 	apt install lsb-release ca-certificates apt-transport-https software-properties-common -y
+	apt -y install nginx; \
+	apt install -y openssl;
 
 COPY ./conf/nginx.conf /etc/nginx/conf.d/wordpress.conf
 
