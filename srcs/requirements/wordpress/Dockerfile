@@ -8,8 +8,7 @@ RUN apt -y update && apt -y install wget; \
 	tar -xzvf wordpress-$version.tar.gz -C /var/www/html; \
 	rm wordpress-$version.tar.gz; \
 	chown -R www-data:www-data /var/www/html/wordpress; \
-	chmod -R 755 /var/www/html/wordpress; \
-	cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php;
+	chmod -R 755 /var/www/html/wordpress;
 
 RUN apt-get -y install php-cli php-mysql php-curl php-gd php-intl php-fpm
 

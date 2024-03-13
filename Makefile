@@ -4,39 +4,46 @@ PATH_DOCKER_COMPOSE = ./srcs/docker-compose.yml
 
 PATH_VOLUME = /home/jvigny/data/
 
+DOCKER = docker compose
+
 all: $(NAME)
 
 $(NAME):
-	docker compose -f $(PATH_DOCKER_COMPOSE) up --build
-
-up:
-	docker compose -f $(PATH_DOCKER_COMPOSE) up
+	$(DOCKER) -f $(PATH_DOCKER_COMPOSE) up --build
 
 build:
-	docker compose -f $(PATH_DOCKER_COMPOSE) build
+	$(DOCKER) -f $(PATH_DOCKER_COMPOSE) build
 
-start:
-	docker compose -f $(PATH_DOCKER_COMPOSE) start
+up:
+	$(DOCKER) -f $(PATH_DOCKER_COMPOSE) up
 
 down:
-	docker compose -f $(PATH_DOCKER_COMPOSE) down
+	$(DOCKER) -f $(PATH_DOCKER_COMPOSE) down
+
+start:
+	$(DOCKER) -f $(PATH_DOCKER_COMPOSE) start
 
 stop:
-	docker compose -f $(PATH_DOCKER_COMPOSE) stop
+	$(DOCKER) -f $(PATH_DOCKER_COMPOSE) stop
 
 ps:
-	docker compose -f $(PATH_DOCKER_COMPOSE) ps
+	$(DOCKER) -f $(PATH_DOCKER_COMPOSE) ps
 
-clean:
-	docker compose -f $(PATH_DOCKER_COMPOSE) down -v
+downv:
+	$(DOCKER) -f $(PATH_DOCKER_COMPOSE) down -v
 
-fclean:	clean
+prune:
+	docker system prune -a
+	docker system df 
+
+
+remove:	downv
 	sudo rm -rf $(PATH_VOLUME)database
 	sudo rm -rf $(PATH_VOLUME)wordpress
 	mkdir -p $(PATH_VOLUME)database
 	mkdir -p $(PATH_VOLUME)wordpress
 
-re:	fclean all
+re:	remove all
 
 
-.PHONY: all clean fclean re
+.PHONY: all build up down start stop ps downv prune remove re
