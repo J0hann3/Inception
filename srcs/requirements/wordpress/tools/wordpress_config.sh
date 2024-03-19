@@ -23,12 +23,7 @@ else
 	sed -i "0,/put your unique phrase here/s/put your unique phrase here/$LOGGED_IN_SALT/" /var/www/html/wordpress/wp-config.php
 	sed -i "0,/put your unique phrase here/s|put your unique phrase here|$NONCE_SALT|" /var/www/html/wordpress/wp-config.php
 
-	# cat /var/www/html/wordpress/wp-config.php
-
-	# cat /etc/php/7.4/fpm/pool.d/wordpress.conf
-
 	rm /etc/php/7.4/fpm/pool.d/www.conf
-	# sed -i "s|listen = /run/php/php7.4-fpm.sock|listen = 9000|" /etc/php/7.4/fpm/pool.d/www.conf
 fi
 
 service php7.4-fpm start
