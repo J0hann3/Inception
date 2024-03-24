@@ -34,8 +34,7 @@ downv:
 
 prune:
 	docker system prune -a
-	docker system df 
-
+	docker system df
 
 remove:	downv
 	sudo rm -rf $(PATH_VOLUME)database
@@ -43,7 +42,7 @@ remove:	downv
 	mkdir -p $(PATH_VOLUME)database
 	mkdir -p $(PATH_VOLUME)wordpress
 
-re:	remove all
+re:	downv all
 
 
 .PHONY: all build up down start stop ps downv prune remove re
