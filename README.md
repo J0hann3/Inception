@@ -1,4 +1,10 @@
-# Inception
+<h1 align=center>💻 Inception</h1>
+<p align="center">
+  <img src="img/inception.png?raw=true"/>
+</p>
+
+## About
+>This document is a System Administration related exercise.
 
 [Subject Inception Project 42](Inception.pdf)
 
